@@ -1,0 +1,28 @@
+{
+  "events": [
+    {
+      "page_location": "/magnesium-benefits",
+      "sessions": 500,
+      "bounce_rate": 0.85,
+      "purchases": 0
+    },
+    {
+      "page_location": "/epsom-salt",
+      "sessions": 1200,
+      "bounce_rate": 0.40,
+      "purchases": 15
+    },
+    {
+      "page_location": "/home",
+      "sessions": 3000,
+      "bounce_rate": 0.25,
+      "purchases": 50
+    },
+    {
+      "page_location": "/sleep-guide",
+      "sessions": 200,
+      "bounce_rate": 0.60,
+      "purchases": 2
+    }
+  ]
+}
