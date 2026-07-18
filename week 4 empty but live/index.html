@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio - Coming Soon</title>
-    <!-- Import Inter Font -->
+    <title>Hassan | Backend Engineer</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
         /* Identity Kit Implementation */
@@ -18,35 +17,197 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             font-family: 'Inter', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             margin: 0;
-            text-align: center;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        /* Container & Navigation */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .logo {
+            background-color: var(--accent-color);
+            color: white;
+            font-weight: 700;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            margin-left: 1rem;
+            font-weight: 700;
+        }
+
+        /* Section Styling */
+        section {
+            padding: 4rem 0;
+            border-bottom: 1px solid #eee;
         }
 
         h1 {
-            font-weight: 700;
-            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            color: var(--accent-color);
+            margin-top: 2rem;
         }
 
         p {
-            font-weight: 400;
-            color: #555;
-            max-width: 600px;
+            font-size: 1.1rem;
+            color: #444;
         }
 
-        .accent {
-            color: var(--accent-color);
+        /* Buttons & CTAs */
+        .btn {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 4px;
+            margin-top: 1rem;
         }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--accent-color);
+            border: 2px solid var(--accent-color);
+        }
+
+        /* Case Study Image Placeholders */
+        .img-placeholder {
+            width: 100%;
+            height: 300px;
+            background-color: #eee;
+            border: 1px dashed #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+            margin: 1.5rem 0;
+        }
+
+        /* Footer / Bio */
+        .bio-section {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .bio-img {
+            width: 150px;
+            height: 150px;
+            background-color: #eee;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+        }
+
     </style>
 </head>
 <body>
-    <div>
-        <h1>Hassan <span class="accent">|</span> Backend Engineer</h1>
-        <p>I engineer fault-tolerant backend pipelines that scale quietly.</p>
-        <p><em>(Portfolio structure is live. Full build coming next week.)</em></p>
+
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <a href="#" class="logo">H</a>
+            <nav>
+                <a href="#work">The Work</a>
+                <a href="#about">About</a>
+                <a href="mailto:contact@example.com" class="accent">Email Me</a>
+            </nav>
+        </header>
+
+        <!-- SECTION 1: HERO -->
+        <section id="hero">
+            <p><strong>Node.js & Python Data Engineering</strong></p>
+            <h1>I engineer fault-tolerant backend pipelines that scale quietly, so your team doesn't get woken up by server crashes at 3 AM.</h1>
+            <a href="mailto:contact@example.com" class="btn">Email Me</a>
+            <p style="margin-top: 1rem;"><a href="#work" style="color: var(--accent-color);">Or scroll to see the proof ↓</a></p>
+        </section>
+
+        <!-- SECTION 2: STRONGEST WORK -->
+        <section id="work">
+            <h2>The Background Report Pipeline</h2>
+            
+            <div class="img-placeholder">
+                [Raw Terminal Screenshot Placeholder: Idempotency hits & Retries]
+            </div>
+
+            <h3>The Problem</h3>
+            <p>A heavy PDF report generation process was blocking API responses. Users had to sit staring at a loading spinner for up to 10 seconds while the server chewed through SQL aggregations and PDF rendering, risking browser timeouts.</p>
+
+            <h3>What I Did (And Decided)</h3>
+            <p>I moved the heavy lifting out of the request cycle into a custom Node.js in-memory queue. I decided to build the queue from scratch to guarantee idempotency and retries without forcing local Redis dependencies. The API now returns a <code>202 Accepted</code> instantly. A background worker queries SQLite, draws the PDF using pdfkit, saves it as an artifact, and resolves the job with a download link.</p>
+
+            <h3>What Came of It</h3>
+            <p>API latency dropped from 10 seconds to less than 50 milliseconds. The worker safely handles simulated crashes by automatically retrying up to 3 times before triggering an alert, ensuring no report request is ever silently dropped.</p>
+
+            <a href="mailto:contact@example.com" class="btn btn-outline">Email me to build your next queue</a>
+        </section>
+
+        <!-- SECTION 3: NEXT WORK -->
+        <section id="work-2">
+            <h2>The Polite Web Scraper</h2>
+            
+            <div class="img-placeholder">
+                [Vercel Dashboard Screenshot Placeholder: JSON Data & Filters]
+            </div>
+
+            <h3>The Problem</h3>
+            <p>Extracting thousands of clean product records from a website without getting IP banned or causing a strain on the target server. Most beginner scripts hammer servers until they crash or get blocked, leaving you with incomplete, messy data.</p>
+
+            <h3>What I Did (And Decided)</h3>
+            <p>I built a decoupled Python scraping pipeline. I decided not to use massive frameworks like Scrapy because it was overkill. Instead, I implemented a strict 1-second rate limit, checked <code>robots.txt</code> before every crawl, passed an honest custom User-Agent, and built an automatic backoff-retry mechanism for 5xx errors.</p>
+
+            <h3>What Came of It</h3>
+            <p>A highly robust scraper that safely pulled records into a RAG-ready structured dataset. The interactive dashboard is deployed live on Vercel, allowing users to filter, sort, and view the scraped data instantly.</p>
+
+            <a href="https://github.com/hassan-635/FLYRANK-INTERNSHIP" target="_blank" class="btn btn-outline">View the full code on GitHub</a>
+        </section>
+
+        <!-- SECTION 4: TRUST & CONTACT -->
+        <section id="about">
+            <h2>About Me</h2>
+            <div class="bio-section">
+                <div class="bio-img">
+                    [Headshot Photo]
+                </div>
+                <div>
+                    <p>I'm a backend-focused engineering intern who builds data pipelines that don't break at 3 AM. I write Node.js and Python, and I prefer simple, decoupled architectures over massive frameworks when the job doesn't call for it.</p>
+                    <br>
+                    <a href="mailto:contact@example.com" class="btn">Email Me</a>
+                </div>
+            </div>
+        </section>
+
     </div>
+
 </body>
 </html>
