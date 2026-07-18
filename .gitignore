@@ -1,0 +1,39 @@
+# ═══════════════════════════════════════════════════════════
+#  FlyRank Internship — Global .gitignore
+# ═══════════════════════════════════════════════════════════
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Scraper output (re-generate by running the scraper)
+**/output/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node / Vercel
+node_modules/
+.vercel/
+.next/
+
+# Env files
+.env
+.env.local
