@@ -1,0 +1,67 @@
+<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+<head>
+<meta charset="utf-8">
+<title>Agent Design Spec</title>
+<style>
+  body { font-family: Calibri, sans-serif; line-height: 1.5; }
+  h1 { color: #2E74B5; }
+  h2 { color: #2E74B5; border-bottom: 1px solid #ccc; padding-bottom: 2px; }
+  b, strong { color: #333; }
+</style>
+</head>
+<body>
+
+<h1>Week 5: Design Your Personal Agent</h1>
+
+<h2>1. Job to be Done</h2>
+<p><b>The Agent:</b> The Semantic SEO Opportunity Scorer.<br>
+<b>The Job:</b> Given raw Google Search Console (GSC) and Google Analytics 4 (GA4) data from the FlyRank Hackathon dataset, the agent will analyze the performance data, classify the underlying search intent of the queries, and output a ranked list of the top 5 highest-leverage content actions (e.g., "Rewrite Title", "Merge Pages") based on expected business impact rather than simple search volume.</p>
+
+<h2>2. The User and Usage Frequency</h2>
+<p><b>User:</b> Me (Backend/Data Intern working on the FlyRank brief).<br>
+<b>Frequency:</b> Run once a week during the content strategy sprint to prioritize work.</p>
+
+<h2>3. Tools and Data Needed (Access Plan)</h2>
+<ul>
+  <li><b>Data Source 1:</b> GSC Site & URL Impressions (CSV exports, provided in the hackathon brief).</li>
+  <li><b>Data Source 2:</b> GA4 Raw Event Export (JSON nested format).</li>
+  <li><b>Tool 1 (Data Processor):</b> A Python Pandas script to load the data, flatten the <code>snake_case</code> GA4 JSON, and join the GSC and GA4 datasets on the <i>Landing Page URL</i> (since GA4 lacks query data).</li>
+  <li><b>Tool 2 (Intent Classifier):</b> An LLM API connection to classify queries into 4 specific semantic buckets: Comparison, Replacement, Risk/Safety, or Use-case.</li>
+</ul>
+
+<h2>4. Draft Instructions (System Prompt)</h2>
+<p style="background-color: #f2f2f2; padding: 10px; border-left: 3px solid #ccc;">
+"You are a Senior SEO Data Scientist. I am providing you with a joined dataset containing Google Search Console impression data and GA4 engagement data. <br>
+Your goal is to prioritize content actions by business impact.<br>
+1. Ignore rows where the query field is blank (anonymized data).<br>
+2. Identify 'Striking Distance' pages (pages ranking in positions 3–15).<br>
+3. Identify High-Impression / Low-CTR anomalies.<br>
+4. Classify the semantic intent of the top queries for these pages into: Comparison, Replacement, Risk, or Use-case.<br>
+5. Output a JSON array containing the Top 5 most urgent content recommendations, including the URL, the identified problem (e.g., 'Intent Mismatch'), and the recommended action (e.g., 'Rewrite Title')."
+</p>
+
+<h2>5. Five Eval Cases (Pre-Build)</h2>
+<p>Before the agent is considered successful, it must pass these 5 scenarios based on the FL-03 standard:</p>
+<ol>
+  <li><b>The Striking Distance:</b> Input is a page with 10k impressions, position 4.2, and CTR 1%. <b>Expected Output:</b> High-priority recommendation for a Title/Meta description rewrite.</li>
+  <li><b>The Anonymized Row:</b> Input contains a row with high traffic but a blank/null search query. <b>Expected Output:</b> The agent ignores the row or flags it as anonymized without attempting to classify its "intent".</li>
+  <li><b>The Intent Mismatch:</b> Input is a page ranking #2 for "safe alternatives to epsom salt", but GA4 shows an 85% bounce rate and zero purchases. <b>Expected Output:</b> High-priority recommendation stating "Content intent mismatch - page is likely transactional but query is informational."</li>
+  <li><b>The Cannibalization:</b> Input shows two different URLs (<code>/magnesium-benefits</code> and <code>/benefits-of-magnesium</code>) both ranking position 8 for the same query cluster. <b>Expected Output:</b> Recommendation to consolidate/merge the pages.</li>
+  <li><b>The Winner:</b> Input is a page ranking Position 1 with a 35% CTR and high conversion rate. <b>Expected Output:</b> Agent ignores this page completely. Do not fix what isn't broken.</li>
+</ol>
+
+<h2>6. Risks and Guardrails</h2>
+<ul>
+  <li><b>Risk:</b> Hallucinating traffic data to justify a narrative.<br>
+      <b>Guardrail:</b> The agent must only use the numbers provided in the Python DataFrame context. If a metric is missing, it must output "Insufficient Data" rather than guessing.</li>
+  <li><b>Risk:</b> Violating client confidentiality.<br>
+      <b>Guardrail:</b> The script will strip out raw Personal Identifiable Information (PII) from the GA4 export <i>before</i> passing the aggregated data chunks to the LLM API.</li>
+</ul>
+
+<h2>7. Build Platform Choice & Justification</h2>
+<p><b>Platform Chosen:</b> A Scripted Agent (Python + Pandas + Anthropic API).<br>
+<b>Justification against alternatives:</b> I initially considered a Claude Project or a Custom ChatGPT. However, the brief states the GA4 export contains ~1,700 nested JSON events per day and GSC has ~8,000 rows. Dropping 10,000+ rows of raw, unjoined CSV/JSON text into a standard chat window will either hit token limits, cause massive hallucinations, or crash. <br>
+As a backend intern, writing a local Python script is free and highly scalable. Pandas can easily flatten the GA4 JSON and join the data on the URL in milliseconds. The script will then send only the <i>aggregated, filtered</i> anomalies to the Anthropic API for semantic classification. This leverages code for what code does best (math and joins) and AI for what AI does best (semantic reasoning).</p>
+
+</body>
+</html>
